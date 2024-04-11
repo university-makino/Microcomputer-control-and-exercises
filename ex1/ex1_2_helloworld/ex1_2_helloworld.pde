@@ -8,15 +8,12 @@ Arduino arduino;
 
 //Arduino 及びプログラムの初期設定
 void setup(){
-    size(200, 100); // X, Yの大きさ
+    size(200, 100);
     arduino = new Arduino(
-      this,
-      "/dev/cu.usbserial-14P54810"
-    );
+    this, ”/dev/cu.usbserial-14P54810”);
 }
 
 //プログラム本体 (以下を繰り返し実行)
 void draw(){
-    // RGBで色指定をすることができる
-    background(0,128,255);
+    background(120);
 }
