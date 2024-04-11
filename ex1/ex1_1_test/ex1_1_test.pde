@@ -18,5 +18,5 @@ void setup(){
 //プログラム本体 (以下を繰り返し実行)
 void draw(){
     // RGBで色指定をすることができる
-    background(0,128,255);
+    background(0,128,255); // R, G, Bの値
 }
