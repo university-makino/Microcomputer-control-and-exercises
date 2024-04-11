@@ -1,4 +1,4 @@
-// chap3 1
+// chap3_2
 
 //プログラムに必要な変数の宣言及び定義
 import processing.serial.*;
