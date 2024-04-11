@@ -28,12 +28,12 @@ void draw(){
     background(120); // 背景色を灰色に設定
 
     int sec = second(); //秒を返す変数
-    String secString = ”sec ” + sec; // "sec 14"などの文字列を作成
+    String secString = "sec"  + sec; // "sec 14"などの文字列を作成
 
     // 0から255までの値を変化させる
     float amt = float(sec) / 59;
     float value = lerp(0, 255, amt);
-    String valString = ”value ” + value;
+    String valString = "value" + value;
     int outValue = round(value);
     arduino.analogWrite(usePin0, outValue);
 
