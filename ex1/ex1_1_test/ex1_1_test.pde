@@ -10,8 +10,8 @@ Arduino arduino;
 void setup(){
     size(200, 100); // X, Yの大きさ
     arduino = new Arduino(
-      this,
-      "/dev/cu.usbserial-14P54810"
+        this,
+        "/dev/cu.usbserial-14P54810"
     );
 }
 
