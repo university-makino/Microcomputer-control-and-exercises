@@ -27,7 +27,7 @@ void draw(){
     input0 = arduino.analogRead(usePin0);
     // show analog input values
     fill(255);
-    text("Ain - 0 = " + input0, 15, 30);
+    text("Ain-0 = " + input0, 15, 30);
     // visualise analog input values
     noStroke();
     rect(235, 10, (input0) / 4, 20);
@@ -35,9 +35,9 @@ void draw(){
     line(235, 5, 235, 125);
     line(490, 5, 490, 125);
     if (isRecording){
-        // If it’s Recording, use array to storedata.
+        // If its Recording, use array to storedata
         array0 = append(array0, input0);
-        // display it’s recording
+        // display its recording
         text("Recording...", 40, 180);
         text("Press any key to End Recording",40, 210);
         if (second() % 2 == 1){
@@ -45,7 +45,7 @@ void draw(){
             ellipse(25, 170, 9, 9);
         }
     } else {
-        // If it’s not Recording, show how to use.
+        // If its not Recording, show how to use.
         text( "Press Esc key to Exit", 40, 180);
         text( "Press any key to Record", 40, 210);
     }
