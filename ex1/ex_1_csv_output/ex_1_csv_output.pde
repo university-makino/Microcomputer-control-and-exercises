@@ -5,7 +5,7 @@ Arduino arduino;
 
 PFont myFont;
 int usePin0 = 0;
-String Label 0 = "array0";
+String Label0 = "array0";
 int[] array0 = new int[0];
 
 int input0;
@@ -26,7 +26,7 @@ void draw(){
     background(120);
     input0 = arduino.analogRead(usePin0);
     // show analog input values
-    ﬁll(255);
+    fill(255);
     text("Ain - 0 = " + input0, 15, 30);
     // visualise analog input values
     noStroke();
@@ -38,10 +38,10 @@ void draw(){
         // If it’s Recording, use array to storedata.
         array0 = append(array0, input0);
         // display it’s recording
-        text( "Recording...", 40, 180);
-        text( "Press any key to End Recording", 210);
+        text("Recording...", 40, 180);
+        text("Press any key to End Recording",40, 210);
         if (second() % 2 == 1){
-            ﬁll(255, 0, 0);
+            fill(255, 0, 0);
             ellipse(25, 170, 9, 9);
         }
     } else {
@@ -56,7 +56,7 @@ void keyPressed(){
 
         // making contents of csv ﬁle
         String[] lines = new String[array0.length + 1];
-        lines[0] = "Steps," + Label 0;
+        lines[0] = "Steps," + Label0;
         for (int i = 0; i < array0.length; i++){
             lines[i + 1] = (i + 1) + "," + array0[i];
         }
