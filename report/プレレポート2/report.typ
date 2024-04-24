@@ -12,6 +12,19 @@
 }
 #show heading: heading_font
 
+// ページ設定 //
+#set page(
+    paper: "a4",
+    margin: (x: 25mm, y: 25mm),
+    columns: 1,
+    //fill: 背景色,
+    numbering: "1",
+    number-align: center,
+    header: [
+        #set text(8pt)
+    ]
+)
+
 //タイトルページここから//
 #align(right, text()[
   #text[提出日]#datetime.today().display("[year]年[month]月[day]日")
