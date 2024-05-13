@@ -17,10 +17,10 @@ int threshold3 = 480;
 int threshold4 = 540;
 */
 
-int threshold1 = 430;
-int threshold2 = 520;
-int threshold3 = 580;
-int threshold4 = 620;
+int blackThreshold = 860;
+int grayThreshold2 = 520;
+int grayThreshold1 = 122;
+int whiteThreshold = 60;
 
 // 不感帯の幅
 int hysteresis = 20;
@@ -58,31 +58,31 @@ String getStatus(int input) {
   
   String status = "";
   
-  if (input > threshold1 + hysteresis){
-    status = "0";
+  if (input > whiteThreshold + hysteresis){
+    status = "white";
   }
-  if (input > threshold2 + hysteresis){
-    status = "1";
+  if(input > grayThreshold1 + hysteresis){
+    status = "gray";
   }
-  if (input > threshold3 + hysteresis){
-    status = "2";
+  if (input > grayThreshold2 + hysteresis){
+    status = "gray";
   }
-  if (input > threshold4 + hysteresis){
-    status = "3";
+  if (input > blackThreshold + hysteresis){
+    status = "black";
   }
   
   
-  if (input < threshold4 - hysteresis ){
-    status = "2";
+  if (input < blackThreshold - hysteresis ){
+    status = "gray";
   }
-  if (input < threshold3 - hysteresis ){
-    status = "1";
+  if (input < grayThreshold2 - hysteresis ){
+    status = "gray";
   }
-  if (input < threshold2 - hysteresis ){
-    status = "0";
+  if (input < grayThreshold1 - hysteresis ){
+    status = "white";
   }
-  if (input < threshold1 - hysteresis ){
-    status = "empty";
+  if (input < whiteThreshold - hysteresis ){
+    status = "white";
   }
   
   
