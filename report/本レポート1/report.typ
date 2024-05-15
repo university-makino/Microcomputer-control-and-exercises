@@ -108,19 +108,60 @@ GL5528では、暗い時は約1MΩ、明るい時は約10~20kΩの抵抗値を�
   caption: "実験1回路図"
 )<実験1回路図>
 
-@値の取得をするソースコード は、アナログ入力値を取得するソースコードを示している。
+@値の取得をするソースコード は、実験1で使用したアナログ入力値を取得するソースコードを示している。
 
 #figure(
   sourcecode[```c
-  #include <stdio.h>
+//プログラムに必要な変数の宣言及び定義
+import processing.serial.*;
+import cc.arduino.*;
 
-  int main() {
-      printf("Hello, World!\n");
-      return 0;
-  }
+Arduino arduino;
+PFont myFont;
+
+int usePin0 = 0; //Arduino A0ピン
+
+//Arduino 及びプログラムの初期設定
+void setup(){
+    size(600, 250);
+    arduino = new Arduino(
+        this,
+        "/dev/cu.usbserial-14P54810"
+    );
+    myFont = loadFont("CourierNewPSMT-48.vlw");
+    textFont(myFont, 30);
+    frameRate(30);
+}
+
+// 入力値の格納用変数
+int input0;
+
+//プログラム本体 (以下を繰り返し実行)
+void draw(){
+    background(120);
+    input0 = arduino.analogRead(usePin0);
+    
+    //入力値を表示
+    text("A0: " + input0, 50, 100);
+}
   ```],
   caption: "値の取得をするソースコード"
 )<値の取得をするソースコード>
+
+- プログラムの概要
+センサから ArduinoA0 ピンへの入力値をアナログ入力として読み込む。読み込んだ値を数値として表示する。
+- プログラムの説明
+  - 1～7 行目: プログラムに必要な変数の宣言および定義またはライブラリのインポートを行う。
+  - 8 行目で ArduinoA0 ピンの使用を usePin0 = 0 として定義している。
+  - 11～20 行目: Arduino およびプログラムの初期設定
+    - 10 行目で画面表示に用いるウィンドウサイズを横 600px,縦 250px と定義している。
+    - 11 行目で"/dev/cu.usbserial-14P54810"のポートと 57600 の速度で通信する arduino インスタンスを生成する．
+    - 14 行目でフレームレートを 30 としている．
+  - 23～32 行目：プログラムの動作
+    - 23 行目で入力用の変数 input0 を宣言している。
+    - 27 行目で背景色を灰色に設定する。
+    - 28 行目で ArduinoA0 ピンのアナログ入力を input0 に入れる。
+    - 31 行目で input0 を数値として表示する．
 
 ==== センサの動作から気づいたこと・気になったことを書きなさい 
 
