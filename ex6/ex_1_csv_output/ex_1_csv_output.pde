@@ -31,9 +31,9 @@ void draw(){
     input2 = arduino.analogRead(usePin2);
     // show analog input values
     fill(255);
-    text( "Ain-0 = " + input0, 15, 30);
-    text( "Ain-1 = " + input1, 15, 60);
-    text( "Ain-2 = " + input2, 15, 90);
+    text( "A0 x = " + input0, 15, 30);
+    text( "A1 y = " + input1, 15, 60);
+    text( "A2 z = " + input2, 15, 90);
     // visualise analog input values
     noStroke();
     rect( 235, 10, (input0)/4, 20);
