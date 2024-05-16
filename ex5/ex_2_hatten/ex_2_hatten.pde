@@ -14,7 +14,7 @@ void setup() {
   size(600, 250);
   
   // Arduinoの初期化
-  arduino = new Arduino(this, "/dev/cu.usbserial-AI02PP00");
+  arduino = new Arduino(this, "/dev/cu.usbserial-14P54810");
   
   // フォントの読み込みと設定
   myFont = loadFont("CourierNewPSMT-48.vlw");
@@ -24,6 +24,7 @@ void setup() {
   frameRate(30);
 }
 
+int count = 0;
 
 void draw() {
   background(120);
@@ -35,13 +36,11 @@ void draw() {
   text("A0: " + inputValue, 50, 100);
   
   if(inputValue > 800) {
-    // デジタルピンの出力をHIGHにする
-    arduino.digitalWrite(digitalPin2, Arduino.HIGH);
-    delay(2000);
-    arduino.digitalWrite(digitalPin2, Arduino.LOW);
-  } else {
-    // デジタルピンの出力をLOWにする
-    arduino.digitalWrite(digitalPin2, Arduino.LOW);
+    count++;
+    if(count >= 30){
+      arduino.digitalWrite(digitalPin2, Arduino.HIGH);
+      dilay(1000);
+      arduino.digitalWrite(digitalPin2, Arduino.LOW);
+    } 
   }
 }
-
