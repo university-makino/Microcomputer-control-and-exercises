@@ -37,10 +37,13 @@ void draw() {
   
   if(inputValue > 800) {
     count++;
-    if(count >= 30){
+    if(count >= 15){
+      count = 0;
       arduino.digitalWrite(digitalPin2, Arduino.HIGH);
-      dilay(1000);
+      delay(2000);
       arduino.digitalWrite(digitalPin2, Arduino.LOW);
     } 
+  }else {
+    count = 0;
   }
 }
