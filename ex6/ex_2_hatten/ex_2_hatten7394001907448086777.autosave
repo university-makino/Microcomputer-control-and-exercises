@@ -12,7 +12,7 @@ int analogPin1 = 1;
 int analogPin2 = 2;
 
 void setup() {
-  size(600, 300);
+  size(600, 250);
   
   // Arduinoの初期化
   arduino = new Arduino(this, "/dev/cu.usbserial-14P54810");
@@ -25,8 +25,7 @@ void setup() {
   frameRate(30);
 }
 
-int prevX = 0;
-int prevY = 0;
+int count = 0;
 
 void draw() {
   background(120);
@@ -34,17 +33,8 @@ void draw() {
   // アナログピンからの入力を取得
   int x = arduino.analogRead(analogPin0);
   int y = arduino.analogRead(analogPin1);
-  int z = arduino.analogRead(analogPin2);
-  
-  // 平滑化フィルターをかける
-  float smoothness = 0.2; // 平滑化の度合いを調整する値
-  x = (int)(x * smoothness + (1 - smoothness) * prevX);
-  y = (int)(y * smoothness + (1 - smoothness) * prevY);
+  //int z = arduino.analogRead(analogPin2);
   
   fill(255);
-  text("o", 300+( -1 * (x-536)), 150+ (y-488));//横
-  
-  // 前回の値を更新する
-  prevX = x;
-  prevY = y;
+  text("o", 308+(x-530), 158+(y-55));//横
 }
