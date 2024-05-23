@@ -2,7 +2,7 @@
 #import "@preview/codelst:2.0.1": sourcecode
 
 //フォント設定//
-#let gothic  = "serif"
+#let gothic  = "YuMincho"
 
 //本文フォント//
 #set text(11pt, font: gothic, lang: "ja") 
