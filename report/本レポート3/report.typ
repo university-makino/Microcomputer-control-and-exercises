@@ -465,16 +465,152 @@ X軸方向が逆に反応していたのを修正するために、x軸の値に
 
 ==== プログラム
 
-@移動速度を用いたアニメーション制御のソースコード は、移動速度を用いたアニメーション制御のソースコードを示す。
+@移動速度を用いたアニメーション制御のソースコード1 @移動速度を用いたアニメーション制御のソースコード2 は、移動速度を用いたアニメーション制御のソースコードを示す。
 
 #figure(
   sourcecode[```java
 
+import processing.serial.*;
+import cc.arduino.*;
 
+Arduino arduino;
+PFont myFont;
+
+// Arduinoのピン
+int analogPin0 = 0;
+int analogPin1 = 1;
+
+void setup() {
+  size(600, 300);
+  
+  // Arduinoの初期化
+  arduino = new Arduino(this, "/dev/cu.usbserial-14P54810");
+  
+  // フォントの読み込みと設定
+  myFont = loadFont("CourierNewPSMT-48.vlw");
+  textFont(myFont, 30);
+  
+  // フレームレートの設定
+  frameRate(30);
+}
+
+// 前回の値を保持する変数
+int prevX = 0;
+int prevY = 0;
+int count = 0;
+String status = "None";
+final float SMOOTHNESS = 0.2;
+final int THRESHOLD = 70;
+
+void draw() {
+  background(120);
+  
+  // アナログピンからの入力を取得
+  int x = readAndSmooth(analogPin0, prevX);
+  int y = readAndSmooth(analogPin1, prevY);
+  
+  // 状態を更新
+  if (status != "None" && count < 30) {
+    count++;
+  } else {
+    count = 0;
+    status = getStatus(x, y);
+  }
+  
+  // 状態に応じて表示位置を変更
+  displayStatus(status);
+  
+  // 前回の値を更新する
+  prevX = x;
+  prevY = y;
+}
+
+// アナログピンからの入力を取得し、平滑化する
+int readAndSmooth(int pin, int prevValue) {
+  int value = arduino.analogRead(pin);
+  return (int)(value * SMOOTHNESS + (1 - SMOOTHNESS) * prevValue);
+}
+  ```],
+  caption: "移動速度を用いたアニメーション制御のソースコード (1-2)"
+)<移動速度を用いたアニメーション制御のソースコード1>
+
+#figure(
+  sourcecode[```java
+// 状態を取得する
+String getStatus(int x, int y) {
+  if (prevX - x > THRESHOLD) {
+    return "Left";
+  } else if (prevX - x < -THRESHOLD) {
+    return "Right";
+  } else if (prevY - y > THRESHOLD) {
+    return "Down";
+  } else if (prevY - y < -THRESHOLD) {
+    return "Up";
+  }
+  return "None";
+}
+
+// 状態に応じて表示位置を変更する
+void displayStatus(String status) {
+  fill(255);
+  switch (status) {
+    case "Left":
+      text("o", 230, 150);
+      break;
+    case "Right":
+      text("o", 370, 150);
+      break;
+    case "Up":
+      text("o", 300, 70);
+      break;
+    case "Down":
+      text("o", 300, 220);
+      break;
+    default:
+      text("o", 300, 150);
+      break;
+  }
+}
 
   ```],
-  caption: "移動速度を用いたアニメーション制御のソースコード"
-)<移動速度を用いたアニメーション制御のソースコード>
+  caption: "移動速度を用いたアニメーション制御のソースコード (2-2)"
+)<移動速度を用いたアニメーション制御のソースコード2>
+
+- プログラムの概要
+センサから ArduinoA0 A1 A2 ピンへの入力値をアナログ入力として読み込む。読み込んだ値をもとに、移動速度を検出し、記号を動かすアニメーションを行う。
+- プログラムの説明
+  - 1–9 行目: プログラムに必要な変数の宣言および定義またはライブラリのインポートを行う。
+  - 11–23 行目: Arduino およびプログラムの初期設定
+    - 12 行目で画面表示に用いるウィンドウサイズを横 600px,縦 300px と定義している。
+    - 15 行目で"/dev/cu.usbserial-14P54810"のポートと 57600 の速度で通信する arduino インスタンスを生成する．
+    - 18 行目でフォントを読み込む。
+    - 22 行目でフレームレートを 30 としている．
+  - 26–27 行目で以前の値を保持するための変数 prevX, prevY を宣言している。
+  - 28–29 行目で状態を保持するための変数 count, status を宣言している。
+  - 30–31 行目で平滑化の度合いを調整する値 SMOOTHNESS, 閾値を設定する値 THRESHOLD を宣言している。
+  - 33–53 行目：プログラムの動作
+    - 30 行目で背景色を設定する。
+    - 37–38 行目でアナログ入力を読み込むための変数 x, y を宣言している。
+    - 41–45 行目で状態を更新する。1秒ほど状態を確認しその状態が続いた場合、状態を更新する。
+    - 49行目で状態に応じて表示位置を変更する。
+    - 52–53 行目で前回の値を更新する。
+  - 57–60 行目でアナログピンからの入力を取得し、平滑化する関数 readAndSmooth を定義している。
+  - 62–75 行目で状態を取得する関数 getStatus を定義している。
+  - 77–84 行目で状態に応じて表示位置を変更する関数 displayStatus を定義している。
+
+==== 結果
+閾値を使い、どの方向に動かしたか判断する。 
+慣性による逆方向の入力を受け付けないために一度閾値を超えたら1秒間入力を無視する。 
+
+閾値を超えるのが、+70と-70の値を超えた場合、その方向に動いたと判断する。
+
+==== 考察
+急激に動かすと慣性による逆方向への力がはたらいてしまい、急に動かした方向とは逆の方向にも検知してしまう。これを防ぐために一度閾値を超えたら一定時間記号を止めると、動かした方向のみをはっきり検知できる。
+
+=== まとめ
+
+今回の実験では、加速度センサを用いて、センサの動きや傾きを検知し、センサ内部の抵抗値が変化し、アナログ入力の値が変化を確認した。また、その値をもとにアニメーションを制御するプログラムを作成した。
+アニメーションを制御するプログラムを作成し、センサの動きや傾きを視覚的に確認できた。また、センサの動きや傾きを検知し、センサの動作原理を理解できた。
 
 #pagebreak() // ページを分ける
 
