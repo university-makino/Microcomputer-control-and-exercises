@@ -1,7 +1,0 @@
-{
-    "configuration": "cpu=atmega328old",
-    "board": "arduino:avr:nano",
-    "port": "/dev/tty.usbserial-14P54810",
-    "sketch": "ex7/ex0/ex0.ino",
-    "programmer": "arduinoisp"
-}
