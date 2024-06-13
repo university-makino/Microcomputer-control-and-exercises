@@ -54,7 +54,7 @@ void showMatrix(int matrix[8][8]){
         }
         // 三項演算子を他の式でもできる
         digitalWrite(CATHODEPIN[cat], LOW);
-        delay(1);
+        delay(500);
         digitalWrite(CATHODEPIN[cat], HIGH);
     }
 }
