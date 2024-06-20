@@ -2,6 +2,9 @@
     "C_Cpp.errorSquiggles": "disabled",
     "cSpell.words": [
         "ANODEPIN",
-        "CATHODEPIN"
+        "CATHODEPIN",
+        "initialx",
+        "initialy",
+        "initialz"
     ]
 }
