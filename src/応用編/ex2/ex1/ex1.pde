@@ -6,8 +6,8 @@ Arduino arduino;
 PFont myFont;
 
 // Arduinoのピン
-int motorForwardPin = 3;
-int motorBackwardPin = 5;
+int motorPoworPin = 3;
+int motorDirectionPin = 5;
 
 enum MoveStatus{
     STOP,
@@ -36,14 +36,14 @@ void draw() {
 
     // モーターを出力
     if (status == MoveStatus.FORWARD) {
-        arduino.digitalWrite(motorForwardPin, Arduino.HIGH);
-        arduino.digitalWrite(motorBackwardPin, Arduino.LOW);
+        arduino.digitalWrite(motorPoworPin, Arduino.HIGH);
+        arduino.digitalWrite(motorDirectionPin, Arduino.LOW);
     } else if (status == MoveStatus.BACKWARD) {
-        arduino.digitalWrite(motorForwardPin, Arduino.LOW);
-        arduino.digitalWrite(motorBackwardPin, Arduino.HIGH);
+        arduino.digitalWrite(motorPoworPin, Arduino.HIGH);
+        arduino.digitalWrite(motorDirectionPin, Arduino.HIGH);
     } else if (status == MoveStatus.STOP) {
-        arduino.digitalWrite(motorForwardPin, Arduino.LOW);
-        arduino.digitalWrite(motorBackwardPin, Arduino.LOW);
+        arduino.digitalWrite(motorPoworPin, Arduino.LOW);
+        arduino.digitalWrite(motorDirectionPin, Arduino.LOW);
     }
 
     // テキストの描画
