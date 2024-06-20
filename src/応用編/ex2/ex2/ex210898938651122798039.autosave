@@ -7,8 +7,8 @@ Arduino sensorArduino;
 PFont myFont;
 
 // Arduinoのピン
-int motorPoworPin = 3;
-int motorDirectionPin = 5;
+int motorForwardPin = 3;
+int motorBackwardPin = 5;
 int accSensorPinX = 0;
 int accSensorPinY = 1;
 int accSensorPinZ = 2;
@@ -29,7 +29,7 @@ void setup() {
     
     //Arduinoの初期化
     motorArduino = new Arduino(this, "/dev/cu.usbserial-14P50091");
-    sensorArduino = new Arduino(this, "/dev/cu.usbserial-14P54810");
+    sensorArduino = new Arduino(this, "/dev/cu.usbmodem1411");
     
     //フォントの読み込みと設定
     myFont = loadFont("CourierNewPSMT-48.vlw");
@@ -51,21 +51,20 @@ void draw() {
     int accX = sensorArduino.analogRead(accSensorPinX) - preValueX;
     int accY = sensorArduino.analogRead(accSensorPinY) - preValueY;
     int accZ = sensorArduino.analogRead(accSensorPinZ) - preValueZ;
-    println("accX: " + accX + ", accY: " + accY + ", accZ: " + accZ);
 
     // 動作を判定
     status = checkMoveStatus(accX, accY, accZ);
 
     // モーターを出力
     if (status == MoveStatus.FORWARD) {
-        motorArduino.digitalWrite(motorPoworPin, Arduino.HIGH);
-        motorArduino.digitalWrite(motorDirectionPin, Arduino.LOW);
+        motorArduino.digitalWrite(motorForwardPin, Arduino.HIGH);
+        motorArduino.digitalWrite(motorBackwardPin, Arduino.LOW);
     } else if (status == MoveStatus.BACKWARD) {
-        motorArduino.digitalWrite(motorPoworPin, Arduino.HIGH);
-        motorArduino.digitalWrite(motorDirectionPin, Arduino.HIGH);
+        motorArduino.digitalWrite(motorForwardPin, Arduino.LOW);
+        motorArduino.digitalWrite(motorBackwardPin, Arduino.HIGH);
     } else if (status == MoveStatus.STOP) {
-        motorArduino.digitalWrite(motorPoworPin, Arduino.LOW);
-        motorArduino.digitalWrite(motorDirectionPin, Arduino.LOW);
+        motorArduino.digitalWrite(motorForwardPin, Arduino.LOW);
+        motorArduino.digitalWrite(motorBackwardPin, Arduino.LOW);
     }
 
     // テキストの描画
@@ -81,15 +80,16 @@ MoveStatus checkMoveStatus(int accX, int accY, int accZ) {
     if (accX > THRESHOLD + DEADZONE) {
         return MoveStatus.FORWARD;
     }
-    if (accX < THRESHOLD - DEADZONE && accX > 0) {
+    if (accX < THRESHOLD - DEADZONE) {
         return MoveStatus.STOP;
     }
 
-    if (accX > -THRESHOLD + DEADZONE && accX < 0) {
+    if (accX > -THRESHOLD + DEADZONE) {
         return MoveStatus.STOP;
     }
     if (accX < -THRESHOLD - DEADZONE) {
         return MoveStatus.BACKWARD;
     }
+    
     return MoveStatus.STOP;
 }
