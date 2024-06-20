@@ -1,7 +1,9 @@
-// chap5.1.2ex
-int ANODEPIN[] = {2, 3, 4, 5, 6, 7, 8, 9};
-int CATHODEPIN[] = {10, 11, 12, 14, 15, 16, 17, 18};
-int modo_1[8][8] = {
+// 使用するピンを定義
+const int ANODEPIN[] = {2, 3, 4, 5, 6, 7, 8, 9};
+const int CATHODEPIN[] = {10, 11, 12, 14, 15, 16, 17, 18};
+
+// 各方向のパターンマトリックスを定義
+const int modo_1[8][8] = {
     {0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 1, 1, 1, 1, 0, 0},
@@ -10,7 +12,7 @@ int modo_1[8][8] = {
     {0, 0, 1, 1, 1, 1, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0}};
-int modo_2[8][8] = {
+const int modo_2[8][8] = {
     {0, 0, 0, 0, 0, 0, 0, 0},
     {0, 1, 1, 1, 1, 1, 1, 0},
     {0, 1, 0, 0, 0, 0, 1, 0},
@@ -19,7 +21,7 @@ int modo_2[8][8] = {
     {0, 1, 0, 0, 0, 0, 1, 0},
     {0, 1, 1, 1, 1, 1, 1, 0},
     {0, 0, 0, 0, 0, 0, 0, 0}};
-int modo_3[8][8] = {
+const int modo_3[8][8] = {
     {1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 1},
     {1, 0, 0, 0, 0, 0, 0, 1},
@@ -28,7 +30,7 @@ int modo_3[8][8] = {
     {1, 0, 0, 0, 0, 0, 0, 1},
     {1, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1}};
-int right[8][8] = {
+const int right[8][8] = {
     {0, 0, 0, 0, 1, 0, 0, 0},
     {0, 0, 0, 0, 0, 1, 0, 0},
     {0, 0, 0, 0, 0, 0, 1, 0},
@@ -37,7 +39,7 @@ int right[8][8] = {
     {0, 0, 0, 0, 0, 0, 1, 0},
     {0, 0, 0, 0, 0, 1, 0, 0},
     {0, 0, 0, 0, 1, 0, 0, 0}};
-int left[8][8] = {
+const int left[8][8] = {
     {0, 0, 0, 1, 0, 0, 0, 0},
     {0, 0, 1, 0, 0, 0, 0, 0},
     {0, 1, 0, 0, 0, 0, 0, 0},
@@ -46,7 +48,7 @@ int left[8][8] = {
     {0, 1, 0, 0, 0, 0, 0, 0},
     {0, 0, 1, 0, 0, 0, 0, 0},
     {0, 0, 0, 1, 0, 0, 0, 0}};
-int up[8][8] = {
+const int up[8][8] = {
     {0, 0, 0, 1, 1, 0, 0, 0},
     {0, 0, 1, 1, 1, 1, 0, 0},
     {0, 1, 0, 1, 1, 0, 1, 0},
@@ -55,7 +57,7 @@ int up[8][8] = {
     {0, 0, 0, 1, 1, 0, 0, 0},
     {0, 0, 0, 1, 1, 0, 0, 0},
     {0, 0, 0, 1, 1, 0, 0, 0}};
-int down[8][8] = {
+const int down[8][8] = {
     {0, 0, 0, 1, 1, 0, 0, 0},
     {0, 0, 0, 1, 1, 0, 0, 0},
     {0, 0, 0, 1, 1, 0, 0, 0},
@@ -64,7 +66,7 @@ int down[8][8] = {
     {0, 1, 0, 1, 1, 0, 1, 0},
     {0, 0, 1, 1, 1, 1, 0, 0},
     {0, 0, 0, 1, 1, 0, 0, 0}};
-int normal[8][8] = {
+const int normal[8][8] = {
     {0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 1, 1, 1, 1, 0, 0},
@@ -74,30 +76,59 @@ int normal[8][8] = {
     {0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0}};
 
-int switch_Pin = 13;           // タクトスイッチ用ピン
-int switch_in;                 // 　タクトスイッチのデジタル値保存用
-int preStatus = HIGH;           // タクトスイッチの前回の状態保存用
-bool boot_status = true;        // 起動状態保存用(trueは起動状態)
-unsigned long startSecond = 0; // ボタンを押したタイミングの秒数保存用
-unsigned long count = 0;       // 　ボタンを押した時間の長さ保存用
+// タクトスイッチ用ピンを定義
+const int switch_Pin = 13;
 
-// x,y,zの初期値保存用
+// タクトスイッチの状態を保持する変数
+int switch_in;
+int preStatus = HIGH;
+
+// 起動状態を保持する変数
+bool boot_status = true;
+
+// ボタンを押したタイミングの時間を保持する変数
+unsigned long startSecond = 0;
+unsigned long count = 0;
+
+// x, y, z の初期値と閾値を定義
 int initialx, initialy, initialz;
-int xPin = 19;
-int yPin = 20;
-int zPin = 21;
-// 初期値と入力値の誤差保存用
-int inx, iny, inz;
-int THRESHOLD = 50;
+const int xPin = 19;
+const int yPin = 20;
+const int zPin = 21;
+const int THRESHOLD = 50;
 
+// 初期化関数
 void setup()
 {
-    pinMode(switch_Pin, INPUT_PULLUP); // スイッチピンをインプットに指定
+    pinMode(switch_Pin, INPUT_PULLUP);
     pinMode(xPin, INPUT);
     pinMode(yPin, INPUT);
     pinMode(zPin, INPUT);
-    Serial.begin(9600);         // シリアル通信
-    delay(1000);                // 初期化処理待ち
+    Serial.begin(9600);
+    delay(1000);
+
+    setupPins(); // ピンの初期化を行う関数
+
+    // 初期値を取得
+    initialx = analogRead(xPin);
+    initialy = analogRead(yPin);
+    initialz = analogRead(zPin);
+}
+
+// ループ関数
+void loop()
+{
+    handleButtonPress(); // ボタンの状態を処理する関数
+
+    if (boot_status)
+    {
+        showArrow();
+    }
+}
+
+// ピンの初期化を行う関数
+void setupPins()
+{
     for (int ano = 0; ano < 8; ano++)
     {
         pinMode(ANODEPIN[ano], OUTPUT);
@@ -108,58 +139,68 @@ void setup()
         pinMode(CATHODEPIN[cat], OUTPUT);
         digitalWrite(CATHODEPIN[cat], HIGH);
     }
-    // 初期化
-    initialx = analogRead(xPin);
-    initialy = analogRead(yPin);
-    initialz = analogRead(zPin);
 }
-void loop()
+
+// ボタンの状態を処理する関数
+void handleButtonPress()
 {
-    switch_in = digitalRead(switch_Pin); // タクトスイッチの現状態（high or low）を保存
+    switch_in = digitalRead(switch_Pin);
     Serial.println("switch_in");
-    Serial.println(switch_in);           // デバッグ用
-    // ボタンの処理
+    Serial.println(switch_in);
+
     if (switch_in == HIGH && preStatus == LOW)
-    {                           // ボタンを押した時
-        startSecond = millis(); // ボタンを押し始めたタイミングの秒数を記録（ミリ秒単位）
-        count = 0;              // ボタンを押した時間の長さを初期化
+    {
+        startSecond = millis();
+        count = 0;
     }
     else if (switch_in == LOW && preStatus == HIGH)
-    {                                            // ボタンを離した時
-        count = (millis() - startSecond) / 1000; // ボタンを押している時間を計算（秒単位）
-        Serial.print(count);                     // デバッグ用
+    {
+        count = (millis() - startSecond) / 1000;
+        Serial.print(count);
         Serial.println("秒");
-        // 　ボタンが2秒以上押された時のマトリクスの処理
-        if (count >= 2 && boot_status == false)
-        {                             // ボタンが2秒以上押された時かつ終了状態
-            Serial.println("起動");   // デバッグ用
-            showMatrix(modo_1);       // アニメーションの表示
-            showMatrix(modo_2);       // アニメーションの表示
-            showMatrix(modo_3);       // アニメーションの表示
-            count = 0;                // 同じ処理を繰り返さないためにボタンを押した時間の長さを初期化
-            boot_status = !boot_status; // 起動状態に切り替え
-        }
-        else if (count >= 2 && boot_status == true)
-        {                             // ボタンが2秒以上押された時かつ起動状態
-            Serial.println("終了");   // デバッグ用
-            showMatrix(modo_3);       // アニメーションの表示
-            showMatrix(modo_2);       // アニメーションの表示
-            showMatrix(modo_1);       // アニメーションの表示
-            count = 0;                // 同じ処理を繰り返さないためにボタンを押した時間の長さを初期化
-            boot_status = !boot_status; // 終了状態に切り替え
-        }
-    }
-    preStatus = switch_in; // タクトスイッチの前状態（high or low）を保存
 
-    if(boot_status){
-        showAllow();
+        if (count >= 2)
+        {
+            if (!boot_status)
+            {
+                Serial.println("起動");
+                showStartupAnimation();
+                boot_status = true;
+            }
+            else
+            {
+                Serial.println("終了");
+                showShutdownAnimation();
+                boot_status = false;
+            }
+            count = 0;
+        }
     }
+    preStatus = switch_in;
 }
 
-void showAllow(){
-    inx = analogRead(xPin) - initialx;
-    iny = analogRead(yPin) - initialy;
-    inz = analogRead(zPin) - initialz;
+// 起動アニメーションを表示する関数
+void showStartupAnimation()
+{
+    showMatrix(modo_1);
+    showMatrix(modo_2);
+    showMatrix(modo_3);
+}
+
+// 終了アニメーションを表示する関数
+void showShutdownAnimation()
+{
+    showMatrix(modo_3);
+    showMatrix(modo_2);
+    showMatrix(modo_1);
+}
+
+// 矢印を表示する関数
+void showArrow()
+{
+    int inx = analogRead(xPin) - initialx;
+    int iny = analogRead(yPin) - initialy;
+    int inz = analogRead(zPin) - initialz;
     Serial.print("x:");
     Serial.print(inx);
     Serial.print(" y:");
@@ -189,7 +230,8 @@ void showAllow(){
     }
 }
 
-void showMatrix(int matrix[8][8])
+// マトリックスを表示する関数
+void showMatrix(const int matrix[8][8])
 {
     for (int i = 0; i < 30; i++)
     {
