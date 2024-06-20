@@ -60,12 +60,13 @@ void mousePressed() {
             status = MoveStatus.BACKWARD;
         } else if (status == MoveStatus.BACKWARD) {
             status = MoveStatus.FORWARD;
-        } 
+        }
     } else {
-        if (status == MoveStatus.STOP) {
-            status = MoveStatus.FORWARD;
-        } else  {
-            status = MoveStatus.STOP;
-        } 
+        // 左クリックを押したら停止
+        status = MoveStatus.STOP;
     }
+    
+    println(mouseButton);
+    println(RIGHT);
+    println(LEFT);
 }

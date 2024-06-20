@@ -54,18 +54,9 @@ void draw() {
 
 // マウスの動作でモーターを制御
 void mousePressed() {
-    // 右クリックを押したら前進・後退を切り替える
-    if (mouseButton == RIGHT) {
-        if (status == MoveStatus.FORWARD) {
-            status = MoveStatus.BACKWARD;
-        } else if (status == MoveStatus.BACKWARD) {
-            status = MoveStatus.FORWARD;
-        } 
+    if (status == "stop") {
+        status = "forward";
     } else {
-        if (status == MoveStatus.STOP) {
-            status = MoveStatus.FORWARD;
-        } else  {
-            status = MoveStatus.STOP;
-        } 
+        status = "stop";
     }
 }

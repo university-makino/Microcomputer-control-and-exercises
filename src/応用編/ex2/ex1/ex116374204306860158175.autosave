@@ -20,6 +20,7 @@ void setup() {
     
     //Arduinoの初期化
     arduino = new Arduino(this, "/dev/cu.usbserial-14P50091");
+    //arduino = new Arduino(this, "/dev/cu.usbserial-14P54810");
     
     //フォントの読み込みと設定
     myFont = loadFont("CourierNewPSMT-48.vlw");
@@ -60,12 +61,9 @@ void mousePressed() {
             status = MoveStatus.BACKWARD;
         } else if (status == MoveStatus.BACKWARD) {
             status = MoveStatus.FORWARD;
-        } 
+        }
     } else {
-        if (status == MoveStatus.STOP) {
-            status = MoveStatus.FORWARD;
-        } else  {
-            status = MoveStatus.STOP;
-        } 
+        // 左クリックを押したら停止
+        status = MoveStatus.STOP;
     }
 }
