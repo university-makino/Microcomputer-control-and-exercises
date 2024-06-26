@@ -75,7 +75,7 @@ void draw() {
 }
 
 final int THRESHOLD = 100;
-final int DEADZONE = 30;
+final int DEADZONE = 100;
 
 MoveStatus checkMoveStatus(int accX, int accY, int accZ) {
     if (accX > THRESHOLD + DEADZONE) {
