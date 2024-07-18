@@ -3,6 +3,8 @@ import processing.serial.*;
 import cc.arduino.*;
 
 Arduino arduino;
+Arduino arduino2;
+
 PFont myFont;
 
 int usePin0 = 0; //Arduino A0ピン
@@ -15,8 +17,12 @@ void setup(){
     size(600, 250);
     arduino = new Arduino(
         this,
-        "/dev/cu.usbserial-14P54810"
+        "/dev/cu.usbserial-14P50091"
     );
+    
+    arduino2 = new Arduino(this, "/dev/cu.usbserial-14P54762", 57600); // Arduinoのシリアルポートを設定
+
+    
     myFont = loadFont("CourierNewPSMT-48.vlw");
     textFont(myFont, 30);
     frameRate(30);
@@ -45,8 +51,10 @@ void draw(){
     text("A0: " + input0, 50, 100);
     text("D2: " + input1, 50, 150);
 
+    // 回している量の表示
+    shine(input0/100);
+
     //モーターの制御
-    
     if(input0 >= 500){
         arduino.digitalWrite(useMotorPin1, Arduino.HIGH);
     }else{
@@ -58,5 +66,17 @@ void draw(){
         arduino.digitalWrite(useMotorPin2, Arduino.LOW);
     }else{
         arduino.digitalWrite(useMotorPin2, Arduino.HIGH);
+    }
+}
+
+int[] usePin = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+
+void shine(int num) {
+    for (int i = 0; i < usePin.length; i++) {
+        if (i < num) {
+            arduino2.digitalWrite(usePin[i], Arduino.HIGH); // 指定された個数だけLEDを点灯
+        } else {
+            arduino2.digitalWrite(usePin[i], Arduino.LOW); // それ以外のLEDは消灯
+        }
     }
 }
